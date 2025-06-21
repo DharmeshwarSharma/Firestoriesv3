@@ -32,6 +32,86 @@ export interface PrimeClipMessage {
 }
 
 export class PrimeClipIntegration {
+  private static getContentThumbnail(title: string, contentId: string): string {
+    // Content thumbnail mapping based on the mock data
+    const thumbnailMap: { [key: string]: string } = {
+      // TV Shows and Series
+      "tv-1": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+marvelous+show.jpeg",
+      "recent-4": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/Jack+Ryan.png",
+      "action-1": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/reacher.jpg",
+      "recent-2": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/fallout.webp",
+      "recent-3": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/mr+ans+mrs+smith.jpg",
+      "tv-2": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+power.webp",
+      "original-2": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/citadel.jpeg",
+      "original-3": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+wheelc+of+time.jpeg",
+      "original-4": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/MI+1.webp",
+      "original-1": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+traitors.jpg",
+      "featured-1": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+traitors.jpg",
+
+      // Movies
+      "movie-1": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/The+tomorrow+war.png",
+      "movie-2": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/mr+ans+mrs+smith.jpg",
+      "recent-1": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/Final+Destination+2.jpg",
+      "recent-5": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/MI+1.webp",
+
+      // Action content
+      "action-2": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+boys.avif",
+      "action-3": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/MI+4.jpg",
+      "action-4": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/sound+of+metal.jpg",
+      "action-5": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/fallout.webp",
+
+      // Comedy content
+      "comedy-1": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/coming+2+america.jpeg",
+      "comedy-2": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/Final+Destination+4.jpg",
+      "comedy-3": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+power.webp",
+      "comedy-4": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+traitors.jpg",
+      "comedy-5": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/citadel.jpeg",
+
+      // Drama content
+      "drama-1": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/being+the+ricardos.jpg",
+      "drama-2": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/Final+Destination+2.jpg",
+      "drama-3": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/Final+Destination+4.jpg",
+      "drama-4": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+bear.jpeg",
+      "drama-5": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/The+tomorrow+war.png",
+    };
+
+    // First try to get thumbnail by content ID
+    if (thumbnailMap[contentId]) {
+      return thumbnailMap[contentId];
+    }
+
+    // Fallback: try to match by title
+    const titleLower = title.toLowerCase();
+    const titleMatches: { [key: string]: string } = {
+      "the boys": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+boys.avif",
+      "the marvelous": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+marvelous+show.jpeg",
+      "jack ryan": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/Jack+Ryan.png",
+      "reacher": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/reacher.jpg",
+      "tomorrow war": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/The+tomorrow+war.png",
+      "sound of metal": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/sound+of+metal.jpg",
+      "coming 2 america": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/coming+2+america.jpeg",
+      "the bear": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+bear.jpeg",
+      "fallout": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/fallout.webp",
+      "mr. & mrs. smith": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/mr+ans+mrs+smith.jpg",
+      "the power": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+power.webp",
+      "citadel": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/citadel.jpeg",
+      "wheel of time": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+wheelc+of+time.jpeg",
+      "mission impossible": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/MI+1.webp",
+      "traitors": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+traitors.jpg",
+      "final destination": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/Final+Destination+2.jpg",
+      "being the ricardos": "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/being+the+ricardos.jpg",
+    };
+
+    for (const [key, thumbnail] of Object.entries(titleMatches)) {
+      if (titleLower.includes(key)) {
+        return thumbnail;
+      }
+    }
+
+    // Final fallback to placeholder
+    return "/placeholder.svg?height=200&width=300";
+  }
+
   static async shareClipToFireStories(
     clipShareData: ClipShareData
   ): Promise<boolean> {
@@ -74,7 +154,7 @@ export class PrimeClipIntegration {
         id: `prime_clip_${Date.now()}`,
         contentId: this.generateContentId(clipShareData.clipOptions.title),
         contentTitle: clipShareData.clipOptions.title,
-        contentThumbnail: "/placeholder.svg?height=200&width=300",
+        contentThumbnail: this.getContentThumbnail(clipShareData.clipOptions.title, this.generateContentId(clipShareData.clipOptions.title)),
         startTime: clipShareData.clipOptions.timestamp,
         endTime:
           clipShareData.clipOptions.timestamp +

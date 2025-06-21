@@ -54,7 +54,7 @@ export default function WatchPage({ params }: WatchPageProps) {
         setStartTime(time);
       }
     }
-  }, [id]);  
+  }, [id]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -86,7 +86,7 @@ export default function WatchPage({ params }: WatchPageProps) {
       setVideoError(false);
     };
 
-  
+
     video.addEventListener("error", handleError);
     video.addEventListener("canplay", handleCanPlay);
 
@@ -97,10 +97,10 @@ export default function WatchPage({ params }: WatchPageProps) {
       video.removeEventListener("timeupdate", updateTime);
       video.removeEventListener("loadedmetadata", handleLoadedMetadata);
       video.removeEventListener("error", handleError);
-      video.removeEventListener("canplay", handleCanPlay);    
+      video.removeEventListener("canplay", handleCanPlay);
     };
   }, [startTime]);
-  
+
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -177,9 +177,8 @@ export default function WatchPage({ params }: WatchPageProps) {
         {/* Back Button */}
         <button
           onClick={handleBack}
-          className={`absolute top-6 left-6 z-50 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm ${
-            showControls ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute top-6 left-6 z-50 bg-black/60 hover:bg-black/80 text-white p-3 rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm ${showControls ? "opacity-100" : "opacity-0"
+            }`}
           aria-label="Go back"
         >
           <X className="w-6 h-6" />
@@ -187,9 +186,8 @@ export default function WatchPage({ params }: WatchPageProps) {
 
         {/* Video Title (only shows briefly) */}
         <div
-          className={`absolute top-6 left-1/2 transform -translate-x-1/2 z-40 transition-opacity duration-300 ${
-            showControls ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute top-6 left-1/2 transform -translate-x-1/2 z-40 transition-opacity duration-300 ${showControls ? "opacity-100" : "opacity-0"
+            }`}
         >
           <h1 className="text-white text-xl font-bold bg-black/60 px-6 py-2 rounded-full backdrop-blur-sm">
             {content.title}
@@ -198,9 +196,8 @@ export default function WatchPage({ params }: WatchPageProps) {
 
         {/* Video Controls */}
         <div
-          className={`absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent transition-opacity duration-300 ${
-            showControls ? "opacity-100" : "opacity-0"
-          }`}
+          className={`absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent transition-opacity duration-300 ${showControls ? "opacity-100" : "opacity-0"
+            }`}
         >
           <div className="absolute bottom-0 left-0 right-0 p-8 video-controls">
             {/* Progress Bar */}
@@ -214,11 +211,9 @@ export default function WatchPage({ params }: WatchPageProps) {
                   onChange={handleSeek}
                   className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer transition-all duration-300 group-hover/progress:h-3"
                   style={{
-                    background: `linear-gradient(to right, #00A8E1 0%, #00A8E1 ${
-                      duration ? (currentTime / duration) * 100 : 0
-                    }%, rgba(255,255,255,0.2) ${
-                      duration ? (currentTime / duration) * 100 : 0
-                    }%, rgba(255,255,255,0.2) 100%)`,
+                    background: `linear-gradient(to right, #00A8E1 0%, #00A8E1 ${duration ? (currentTime / duration) * 100 : 0
+                      }%, rgba(255,255,255,0.2) ${duration ? (currentTime / duration) * 100 : 0
+                      }%, rgba(255,255,255,0.2) 100%)`,
                   }}
                   aria-label="Video progress"
                 />
@@ -292,7 +287,12 @@ export default function WatchPage({ params }: WatchPageProps) {
         </div>
 
         {/* Clip This Moment Button */}
-        <ClipButton  currentTime={currentTime} contentTitle={content.title} />
+        <ClipButton
+          currentTime={currentTime}
+          contentTitle={content.title}
+          contentThumbnail={"thumbnail" in content && content.thumbnail ? content.thumbnail : ("image" in content && content.image ? content.image : "/placeholder.svg?height=200&width=300")}
+        />
+
       </div>
     </div>
   );

@@ -2,7 +2,9 @@ export interface ClipOptions {
   duration: 15 | 30;
   timestamp: number;
   title: string;
+  thumbnail?: string;
 }
+
 
 export interface PrimeUser {
   id: string;

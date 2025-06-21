@@ -197,15 +197,15 @@ export class MessageSystem {
       },
       reactionData: processedReaction
         ? {
-            type: processedReaction.type,
-            content: processedReaction.content,
-            voiceBlob: processedReaction.voiceBlob,
-            voiceDuration: processedReaction.voiceDuration
-              ? this.formatDuration(processedReaction.voiceDuration)
-              : undefined,
-            voiceBase64: processedReaction.voiceBase64,
-            timestamp: processedReaction.timestamp,
-          }
+          type: processedReaction.type,
+          content: processedReaction.content,
+          voiceBlob: processedReaction.voiceBlob,
+          voiceDuration: processedReaction.voiceDuration
+            ? this.formatDuration(processedReaction.voiceDuration)
+            : undefined,
+          voiceBase64: processedReaction.voiceBase64,
+          timestamp: processedReaction.timestamp,
+        }
         : undefined,
     };
 
@@ -276,10 +276,10 @@ export class MessageSystem {
       avatar: this.getUserAvatar(fromUserId),
       clipData: {
         title: clipData.contentTitle,
-        thumbnail:
-          clipData.contentThumbnail || "/placeholder.svg?height=200&width=300",
+        thumbnail: clipData.contentThumbnail,
         duration: this.formatDuration(clipData.duration),
         platform: "Prime Video",
+
         primeData: {
           contentId: clipData.contentId,
           startTime: clipData.startTime,
@@ -291,13 +291,13 @@ export class MessageSystem {
       },
       reactionData: processedReaction
         ? {
-            type: processedReaction.type,
-            content: processedReaction.content,
-            voiceBlob: processedReaction.voiceBlob,
-            voiceDuration: processedReaction.voiceDuration,
-            voiceBase64: processedReaction.voiceBase64,
-            timestamp: processedReaction.timestamp,
-          }
+          type: processedReaction.type,
+          content: processedReaction.content,
+          voiceBlob: processedReaction.voiceBlob,
+          voiceDuration: processedReaction.voiceDuration,
+          voiceBase64: processedReaction.voiceBase64,
+          timestamp: processedReaction.timestamp,
+        }
         : undefined,
     };
 
@@ -402,17 +402,17 @@ export class MessageSystem {
               },
               voiceData: message.voiceData
                 ? {
-                    ...message.voiceData,
-                    voiceBlob: blob,
-                    audioUrl: url,
-                    duration: message.voiceData.duration || "0:00",
-                  }
+                  ...message.voiceData,
+                  voiceBlob: blob,
+                  audioUrl: url,
+                  duration: message.voiceData.duration || "0:00",
+                }
                 : {
-                    duration: "0:00",
-                    waveform: this.generateWaveform(),
-                    voiceBlob: blob,
-                    audioUrl: url,
-                  },
+                  duration: "0:00",
+                  waveform: this.generateWaveform(),
+                  voiceBlob: blob,
+                  audioUrl: url,
+                },
             };
           } catch (error) {
             return message;
@@ -764,9 +764,8 @@ export class MessageSystem {
             id: Date.now() + Math.random(),
             type: "system",
             sender: "System",
-            content: `Welcome to ${
-              campfireNames[campfireId] || `Campfire ${campfireId}`
-            }!`,
+            content: `Welcome to ${campfireNames[campfireId] || `Campfire ${campfireId}`
+              }!`,
             timestamp: new Date().toLocaleString(),
             avatar: "/placeholder.svg?height=40&width=40",
           };

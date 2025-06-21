@@ -36,13 +36,15 @@ interface ClipMenuProps {
   onClose: () => void;
   currentTime: number;
   contentTitle: string;
+  contentThumbnail?: string;
 }
+
 
 export default function ClipMenu({
   isOpen,
   onClose,
   currentTime,
-  contentTitle,
+  contentTitle, contentThumbnail,
 }: ClipMenuProps) {
   const [currentStep, setCurrentStep] = useState<ClipMenuStep>("options");
   const [clipOptions, setClipOptions] = useState<ClipOptions>({
@@ -172,12 +174,16 @@ export default function ClipMenu({
 
       // Prepare clip share data
       const clipShareData: ClipShareData = {
-        clipOptions,
+        clipOptions: {
+          ...clipOptions,
+          thumbnail: contentThumbnail || "/placeholder.svg?height=200&width=300",
+        },
         selectedUsers,
         selectedCampfires,
         message,
         voiceNote: voiceNote ?? undefined,
       };
+
 
       // Share to FireStories
       const success = await PrimeClipIntegration.shareClipToFireStories(
@@ -199,7 +205,7 @@ export default function ClipMenu({
       setIsSharing(false);
     }
   };
-  
+
 
   const handleProceedToSharing = () => {
     setCurrentStep("sharing");
@@ -330,11 +336,10 @@ function ClipOptionsStep({
                 <button
                   key={duration}
                   onClick={() => onDurationChange(duration as 15 | 30)}
-                  className={`p-6 rounded-xl border-2 transition-all duration-200 ${
-                    clipOptions.duration === duration
-                      ? "border-[#FF6B35] bg-[#FF6B35]/10 text-[#FF6B35]"
-                      : "border-gray-600 text-gray-300 hover:border-gray-500 hover:bg-white/5"
-                  }`}
+                  className={`p-6 rounded-xl border-2 transition-all duration-200 ${clipOptions.duration === duration
+                    ? "border-[#FF6B35] bg-[#FF6B35]/10 text-[#FF6B35]"
+                    : "border-gray-600 text-gray-300 hover:border-gray-500 hover:bg-white/5"
+                    }`}
                 >
                   <div className="text-3xl font-bold">{duration}s</div>
                   <div className="text-base opacity-80">seconds</div>
@@ -500,11 +505,10 @@ function ClipSharingStep({
           <div className="flex space-x-1 bg-gray-800 rounded-lg p-1 mb-4">
             <button
               onClick={() => setActiveTab("friends")}
-              className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-md transition-colors ${
-                activeTab === "friends"
-                  ? "bg-[#00A8E1] text-white"
-                  : "text-gray-400 hover:text-white"
-              }`}
+              className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-md transition-colors ${activeTab === "friends"
+                ? "bg-[#00A8E1] text-white"
+                : "text-gray-400 hover:text-white"
+                }`}
             >
               <Users className="h-4 w-4" />
               <span>Friends ({availableFriends.length})</span>
@@ -516,11 +520,10 @@ function ClipSharingStep({
             </button>
             <button
               onClick={() => setActiveTab("campfires")}
-              className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-md transition-colors ${
-                activeTab === "campfires"
-                  ? "bg-[#00A8E1] text-white"
-                  : "text-gray-400 hover:text-white"
-              }`}
+              className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-md transition-colors ${activeTab === "campfires"
+                ? "bg-[#00A8E1] text-white"
+                : "text-gray-400 hover:text-white"
+                }`}
             >
               <Users className="h-4 w-4" />
               <span>Campfires ({availableCampfires.length})</span>
@@ -553,11 +556,10 @@ function ClipSharingStep({
                         <button
                           key={user.id}
                           onClick={() => onUserToggle(user)}
-                          className={`w-full p-4 rounded-xl border-2 transition-all duration-200 flex items-center space-x-4 ${
-                            isSelected
-                              ? "border-[#00A8E1] bg-[#00A8E1]/10"
-                              : "border-gray-700 hover:border-gray-600 hover:bg-white/5"
-                          }`}
+                          className={`w-full p-4 rounded-xl border-2 transition-all duration-200 flex items-center space-x-4 ${isSelected
+                            ? "border-[#00A8E1] bg-[#00A8E1]/10"
+                            : "border-gray-700 hover:border-gray-600 hover:bg-white/5"
+                            }`}
                         >
                           <div className="relative flex-shrink-0">
                             <Image
@@ -610,11 +612,10 @@ function ClipSharingStep({
                         <button
                           key={campfire.id}
                           onClick={() => onCampfireToggle(campfire)}
-                          className={`w-full p-4 rounded-xl border-2 transition-all duration-200 flex items-center space-x-4 ${
-                            isSelected
-                              ? "border-[#00A8E1] bg-[#00A8E1]/10"
-                              : "border-gray-700 hover:border-gray-600 hover:bg-white/5"
-                          }`}
+                          className={`w-full p-4 rounded-xl border-2 transition-all duration-200 flex items-center space-x-4 ${isSelected
+                            ? "border-[#00A8E1] bg-[#00A8E1]/10"
+                            : "border-gray-700 hover:border-gray-600 hover:bg-white/5"
+                            }`}
                         >
                           <div className="w-10 h-10 bg-gradient-to-br from-[#00A8E1] to-blue-600 rounded-full flex items-center justify-center">
                             <Users className="w-5 h-5 text-white" />

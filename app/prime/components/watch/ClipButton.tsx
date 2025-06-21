@@ -7,9 +7,11 @@ import ClipMenu from "./ClipMenu"
 interface ClipButtonProps {
   currentTime: number
   contentTitle: string
+  contentThumbnail?: string
 }
 
-export default function ClipButton({ currentTime, contentTitle }: ClipButtonProps) {
+
+export default function ClipButton({ currentTime,contentThumbnail, contentTitle }: ClipButtonProps) {
   const [showTooltip, setShowTooltip] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -58,7 +60,9 @@ export default function ClipButton({ currentTime, contentTitle }: ClipButtonProp
         onClose={handleCloseMenu}
         currentTime={currentTime}
         contentTitle={contentTitle}
+        contentThumbnail={contentThumbnail}
       />
+
     </>
   )
 }
