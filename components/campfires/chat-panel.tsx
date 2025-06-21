@@ -235,90 +235,25 @@ function NetflixClipMessage({
   const [isPlayingReaction, setIsPlayingReaction] = useState(false);
 
   const handlePlayClip = () => {
-    if (message.clipData?.primeData) {
-      const { contentId, startTime } = message.clipData.primeData;
+    if (message.clipData?.netflixData) {
+      const { contentId, startTime } = message.clipData.netflixData;
+      const netflixUrl = `/netflix/watch/${contentId}?t=${Math.floor(
+        startTime
+      )}`;
 
-      // Construct the proper Prime Video URL with time parameter
-      const primeUrl = `/prime/watch/${contentId}?t=${Math.floor(startTime)}`;
-
-      const canAccess = localStorage.getItem("prime-user");
+      const canAccess = localStorage.getItem("netflix-user");
 
       if (canAccess) {
-        // Add logging for debugging
-        console.log("Navigating to Prime Video clip:", {
-          contentId,
-          startTime,
-          url: primeUrl,
-        });
-        router.push(primeUrl);
+        router.push(netflixUrl);
       } else {
         if (
           confirm(
-            "You need to be signed in to Prime Video to watch this clip. Go to Prime Video now?"
+            "You need to be signed in to Netflix to watch this clip. Go to Netflix now?"
           )
         ) {
-          router.push("/prime");
+          router.push("/netflix");
         }
       }
-    }
-  };
-
-  const reconstructBlobFromBase64 = async (
-    base64Data: string
-  ): Promise<Blob | null> => {
-    try {
-      console.log("🔄 Reconstructing blob from base64 in chat panel:", {
-        dataLength: base64Data.length,
-        hasDataPrefix: base64Data.startsWith("data:"),
-        chatContext: "Friend chat panel reconstruction", // Add this line
-        base64Preview: base64Data.substring(0, 100) + "...", // Add this line
-      });
-
-      if (!base64Data || typeof base64Data !== "string") {
-        console.error("Invalid base64 data in chat panel");
-        return null;
-      }
-      if (!base64Data || typeof base64Data !== "string") {
-        return null;
-      }
-
-      let base64String = base64Data;
-      let mimeType = "audio/webm";
-
-      if (base64Data.startsWith("data:")) {
-        const parts = base64Data.split(",");
-        if (parts.length === 2) {
-          const header = parts[0];
-          base64String = parts[1];
-
-          const mimeMatch = header.match(/data:([^;]+)/);
-          if (mimeMatch) {
-            mimeType = mimeMatch[1];
-          }
-        }
-      }
-
-      const byteCharacters = atob(base64String);
-      const byteNumbers = new Array(byteCharacters.length);
-
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-
-      const byteArray = new Uint8Array(byteNumbers);
-      const validTypes = [
-        "audio/webm",
-        "audio/mpeg",
-        "audio/mp3",
-        "audio/ogg",
-        "audio/mp4",
-      ];
-      const finalType = validTypes.includes(mimeType) ? mimeType : "audio/webm";
-      const blob = new Blob([byteArray], { type: finalType });
-
-      return blob;
-    } catch (error) {
-      return null;
     }
   };
 
@@ -411,6 +346,65 @@ function NetflixClipMessage({
     } catch (error) {
       setIsPlayingReaction(false);
       alert("An unexpected error occurred while playing the voice reaction.");
+    }
+  };
+
+  const reconstructBlobFromBase64 = async (
+    base64Data: string
+  ): Promise<Blob | null> => {
+    try {
+      console.log("🔄 Reconstructing blob from base64 in chat panel:", {
+        dataLength: base64Data.length,
+        hasDataPrefix: base64Data.startsWith("data:"),
+        chatContext: "Friend chat panel reconstruction", // Add this line
+        base64Preview: base64Data.substring(0, 100) + "...", // Add this line
+      });
+
+      if (!base64Data || typeof base64Data !== "string") {
+        console.error("❌ Invalid base64 data in chat panel");
+        return null;
+      }
+      if (!base64Data || typeof base64Data !== "string") {
+        return null;
+      }
+
+      let base64String = base64Data;
+      let mimeType = "audio/webm";
+
+      if (base64Data.startsWith("data:")) {
+        const parts = base64Data.split(",");
+        if (parts.length === 2) {
+          const header = parts[0];
+          base64String = parts[1];
+
+          const mimeMatch = header.match(/data:([^;]+)/);
+          if (mimeMatch) {
+            mimeType = mimeMatch[1];
+          }
+        }
+      }
+
+      const byteCharacters = atob(base64String);
+      const byteNumbers = new Array(byteCharacters.length);
+
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      const validTypes = [
+        "audio/webm",
+        "audio/mpeg",
+        "audio/mp3",
+        "audio/ogg",
+        "audio/mp4",
+      ];
+      const finalType = validTypes.includes(mimeType) ? mimeType : "audio/webm";
+      const blob = new Blob([byteArray], { type: finalType });
+
+      return blob;
+    } catch (error) {
+      return null;
     }
   };
 
@@ -584,6 +578,9 @@ function NetflixClipMessage({
     </div>
   );
 }
+
+
+
 
 function PrimeClipMessage({
   message,
@@ -979,7 +976,7 @@ function MessageBubble({ message, isCurrentUser }: MessageBubbleProps) {
           <div className="space-y-2">
             {message.content &&
               message.content !==
-                `Shared a clip from ${message.clipData?.title}` && (
+              `Shared a clip from ${message.clipData?.title}` && (
                 <div
                   className={cn(
                     "p-3 rounded-lg break-words",
