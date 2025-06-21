@@ -7,13 +7,7 @@ import { PrimeUserDataService } from "./lib/services/user-data"
 import FeaturedBanner from "./components/home/FeaturedBanner"
 import ContentRow from "./components/ContentRow"
 import LoadingSkeleton from "./components/ui/LoadingSkeleton"
-import {
-  featuredContent,
-  recentlyAdded,
-  featuredOriginals,
-  popularMovies,
-  topTVShows,
-} from "./lib/mockData"
+import { ContentManager } from "./lib/content-database"
 import type { Metadata } from "next"
 
 const metadata: Metadata = {
@@ -25,6 +19,12 @@ const metadata: Metadata = {
 export default function HomePage() {
   const router = useRouter()
   const { user, setUser } = usePrimeAuthStore()
+  const featuredContent = ContentManager.getFeaturedContent()[0];
+  const featuredOriginals = ContentManager.getFeaturedOriginals();
+  const popularMovies = ContentManager.getPopularMovies();
+  const topTVShows = ContentManager.getTopTVShows();
+  const recentlyAdded = ContentManager.getRecentlyAdded();
+
 
   // Add storage listener for prime-user changes
   const { timestamp } = useStorageListener("prime-user")

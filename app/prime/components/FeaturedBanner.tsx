@@ -3,21 +3,27 @@
 import Image from "next/image"
 import { Play, Plus, Info, Star } from "lucide-react"
 import Link from "next/link"
-
-interface FeaturedContent {
-  id: string
-  title: string
-  description: string
-  backgroundImage: string
-  year?: number
-  rating?: string
-  duration?: string
-  episodeInfo?: string
-  newEpisodeInfo?: string
-  imdbRating?: string
+import { ContentManager, type FeaturedContent } from "../lib/content-database";
+interface FeaturedBannerProps {
+  content?: FeaturedContent;
 }
 
-export default function FeaturedBanner({ content }: { content: FeaturedContent }) {
+
+export default function FeaturedBanner({ content }: FeaturedBannerProps) {
+  // Use provided content or get from ContentManager
+  const featuredContent = content || ContentManager.getFeaturedContent()[0];
+
+  if (!featuredContent) {
+    return (
+      <div className="relative h-[85vh] min-h-[700px] overflow-hidden bg-gray-900 flex items-center justify-center">
+        <div className="text-white text-center">
+          <h1 className="text-4xl font-bold mb-4">No Featured Content Available</h1>
+          <p className="text-gray-400">Please check back later.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="relative h-[85vh] min-h-[700px] overflow-hidden">
       <div className="absolute inset-0">

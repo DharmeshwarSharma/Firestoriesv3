@@ -1,15 +1,18 @@
+"use client"
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
+import { useEffect } from "react"
 import "../globals.css"
 import Header from "./components/layout/Header"
+import { PrimeContentMigration } from "./lib/migration"
 
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
 })
 
-export const metadata: Metadata = {
+const metadata: Metadata = {
   title: {
     default: "PrimeClone - Stream Movies & TV Shows",
     template: "%s | PrimeClone",
@@ -43,6 +46,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  // Run migration check on mount
+  useEffect(() => {
+    if (!PrimeContentMigration.isMigrationComplete()) {
+      console.log("Running Prime Video content migration...");
+      PrimeContentMigration.migrateToNewSystem();
+    }
+  }, []);
+
   return (
     <html lang="en" className={inter.className}>
       <body className="bg-[#0F171E] text-white antialiased">

@@ -1,21 +1,12 @@
 "use client"
 
 import Image from "next/image"
+import { ContentManager, type ContentItem } from "../lib/content-database";
 import Link from "next/link"
 import { ChevronLeft, ChevronRight, Play, Plus, Star } from "lucide-react"
 import { useRef, useState } from "react"
 
-interface ContentItem {
-  id: string
-  title: string
-  thumbnail: string
-  year?: number
-  duration?: string
-  badge?: string
-  isPrime?: boolean
-  rating?: string
-  genre?: string
-}
+
 
 interface ContentRowProps {
   title: string
@@ -23,9 +14,15 @@ interface ContentRowProps {
   seeMoreLink?: string
 }
 
-export default function ContentRow({ title, items, seeMoreLink }: ContentRowProps) {
+
+export default function ContentRow({
+  title = "Popular on Prime",
+  items,
+  seeMoreLink
+}: ContentRowProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+  const contentItems = items || ContentManager.getPopularMovies();
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
@@ -119,9 +116,8 @@ export default function ContentRow({ title, items, seeMoreLink }: ContentRowProp
                 />
 
                 {/* Hover overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-300 ${
-                  hoveredItem === item.id ? 'opacity-100' : 'opacity-0'
-                }`}>
+                <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-300 ${hoveredItem === item.id ? 'opacity-100' : 'opacity-0'
+                  }`}>
                   {/* Content overlay */}
                   <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
                     <div className="flex items-center justify-between mb-2">
@@ -152,7 +148,7 @@ export default function ContentRow({ title, items, seeMoreLink }: ContentRowProp
                         <Play className="w-4 h-4 fill-current" />
                         <span>Play</span>
                       </Link>
-                      <button 
+                      <button
                         onClick={() => {
                           console.log(`Added ${item.title} to watchlist`)
                           // Add your watchlist functionality here

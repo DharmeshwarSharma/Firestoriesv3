@@ -2,91 +2,42 @@
 
 import { ChevronLeft, ChevronRight, Play, Plus, Star } from "lucide-react"
 import { useRef, useState } from "react"
+import { ContentManager, type ContentItem } from "../../lib/content-database"
 
-// Mock data for demonstration
-const mockItems = [
-  {
-    id: "1",
-    title: "The Boys",
-    thumbnail: "https://images.unsplash.com/photo-1489599512143-c2481b30eb4e?w=320&h=180&fit=crop",
-    rating: "8.7",
-    year: "2019",
-    duration: "1h",
-    genre: "Action",
-    badge: "TOP 10",
-    isPrime: true
-  },
-  {
-    id: "2",
-    title: "Rings of Power",
-    thumbnail: "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=320&h=180&fit=crop",
-    rating: "7.2",
-    year: "2022",
-    duration: "1h 10m",
-    genre: "Fantasy",
-    badge: "NEW SERIES",
-    isPrime: true
-  },
-  {
-    id: "3",
-    title: "Jack Ryan",
-    thumbnail: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=320&h=180&fit=crop",
-    rating: "8.1",
-    year: "2018",
-    duration: "45m",
-    genre: "Thriller",
-    badge: "AWARD WINNER",
-    isPrime: true
-  },
-  {
-    id: "4",
-    title: "The Marvelous Mrs. Maisel",
-    thumbnail: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=320&h=180&fit=crop",
-    rating: "8.5",
-    year: "2017",
-    duration: "1h",
-    genre: "Comedy",
-    badge: "NEW SEASON",
-    isPrime: true
-  },
-  {
-    id: "5",
-    title: "Upload",
-    thumbnail: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=320&h=180&fit=crop",
-    rating: "7.8",
-    year: "2020",
-    duration: "30m",
-    genre: "Sci-Fi",
-    badge: "NEW",
-    isPrime: true
-  }
-]
 
-interface ContentItem {
-  id: string
-  title: string
-  thumbnail?: string
-  rating?: string
-  year: string
-  duration: string
-  genre?: string
-  badge?: string
-  isPrime?: boolean
-}
+
 
 interface ContentRowProps {
   title: string
-  items: ContentItem[]
+  items?: ContentItem[]
   seeMoreLink?: string
+  contentType?: 'recent' | 'popular' | 'featured' | 'custom'
 }
 
-export default function ContentRow({ 
-  title = "Popular on Prime", 
-  items = mockItems, 
-  seeMoreLink 
+
+
+
+export default function ContentRow({
+  title = "Popular on Prime",
+  items,
+  contentType = 'popular',
+  seeMoreLink
 }: ContentRowProps) {
+
   const scrollRef = useRef<HTMLDivElement>(null)
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+  // Get items from ContentManager if not provided
+  const contentItems = items || (() => {
+    switch (contentType) {
+      case 'recent':
+        return ContentManager.getRecentlyAdded();
+      case 'featured':
+        return ContentManager.getFeaturedOriginals();
+      case 'popular':
+      default:
+        return ContentManager.getPopularMovies();
+    }
+  })();
 
   const scroll = (direction: "left" | "right") => {
     if (scrollRef.current) {
@@ -171,15 +122,15 @@ export default function ContentRow({
         <div
           ref={scrollRef}
           className="flex space-x-4 overflow-x-auto px-8 md:px-16 pb-4"
-          style={{ 
-            scrollbarWidth: "none", 
+          style={{
+            scrollbarWidth: "none",
             msOverflowStyle: "none"
           }}
         >
-          {items.map((item, index) => (
-            <div 
-              key={item.id} 
-              className="flex-shrink-0" 
+          {contentItems.map((item, index) => (
+            <div
+              key={item.id}
+              className="flex-shrink-0"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <div
@@ -205,9 +156,8 @@ export default function ContentRow({
                 />
 
                 {/* Hover overlay */}
-                <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-300 ${
-                  hoveredItem === item.id ? 'opacity-100' : 'opacity-0'
-                }`}>
+                <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-300 ${hoveredItem === item.id ? 'opacity-100' : 'opacity-0'
+                  }`}>
                   {/* Content overlay */}
                   <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
                     <div className="flex items-center justify-between mb-2">
@@ -228,13 +178,14 @@ export default function ContentRow({
 
                     <div className="flex items-center space-x-2">
                       <a
-                        href={`./watch/${item.id}`}
+                        href={`/prime/watch/${item.id}`}
                         className="flex items-center space-x-2 bg-white hover:bg-gray-200 text-black px-4 py-2 rounded-xl font-semibold text-sm transition-all duration-300 hover:scale-105"
+
                       >
                         <Play className="w-4 h-4 fill-current" />
                         <span>Play</span>
                       </a>
-                      <button 
+                      <button
                         onClick={() => {
                           console.log(`Added ${item.title} to watchlist`)
                           // Add your watchlist functionality here

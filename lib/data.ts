@@ -84,8 +84,9 @@ export const contentRows: ContentRow[] = [
         id: 2,
         title: "Fallout",
         image: "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/fallout.webp",
-        platform: "Starz",
+        platform: "Prime Video", // Change from "Starz" to "Prime Video"
       },
+
       {
         id: 3,
         title: "Final Destination 2",

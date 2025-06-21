@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect,useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { usePrimeAuthStore } from "../lib/stores/auth"
 import { PrimeUserDataService } from "../lib/services/user-data"
@@ -9,139 +9,61 @@ import { Suspense } from "react"
 import ContentRow from "../components/home/ContentRow"
 import LoadingSkeleton from "../components/ui/LoadingSkeleton"
 import { Bookmark, Heart, Clock, Trash2 } from "lucide-react"
-import type { ContentItem } from "../lib/types/index"
-
-// Mock bookmarked content
-const bookmarkedMovies: ContentItem[] = [
-  {
-    id: "bookmark-movie-1",
-    title: "The Tomorrow War",
-    thumbnail: "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/The+tomorrow+war.png",
-    badge: "BOOKMARKED",
-    isPrime: true,
-    year: 2021,
-    duration: "2h 18m",
-    rating: "6.5",
-    genre: "Action",
-  },
-  {
-    id: "bookmark-movie-2",
-    title: "Sound of Metal",
-    thumbnail: "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/sound+of+metal.jpg",
-    isPrime: true,
-    year: 2020,
-    duration: "2h 0m",
-    rating: "7.7",
-    genre: "Drama",
-  },
-  {
-    id: "bookmark-movie-3",
-    title: "Jack Ryan",
-    thumbnail: "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/jack+ryan.jpeg",
-    isPrime: true,
-    year: 2021,
-    duration: "2h 8m",
-    rating: "6.8",
-    genre: "Drama",
-  },
-]
-
-const bookmarkedTVShows: ContentItem[] = [
-  {
-    id: "bookmark-tv-1",
-    title: "The Boys",
-    thumbnail: "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+boys.avif",
-    badge: "WATCHING",
-    isPrime: true,
-    year: 2024,
-    duration: "1h 2m",
-    rating: "8.7",
-    genre: "Superhero",
-  },
-  {
-    id: "bookmark-tv-2",
-    title: "The Marvelous Show",
-    thumbnail: "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+marvelous+show.jpeg",
-    isPrime: true,
-    year: 2023,
-    duration: "52m",
-    rating: "8.7",
-    genre: "Comedy-Drama",
-  },
-  {
-    id: "bookmark-tv-3",
-    title: "Fallout",
-    thumbnail: "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/fallout.webp",
-    badge: "NEW EPISODES",
-    isPrime: true,
-    year: 2024,
-    duration: "1h 5m",
-    rating: "8.4",
-    genre: "Sci-Fi",
-  },
-]
-
-const continueWatching: ContentItem[] = [
-  {
-    id: "continue-1",
-    title: "THE TRAITORS",
-    thumbnail: "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+traitors.jpg",
-    badge: "EPISODE 3",
-    isPrime: true,
-    year: 2024,
-    duration: "45m",
-    rating: "8.2",
-    genre: "Reality TV",
-  },
-  {
-    id: "continue-2",
-    title: "Mission Impossible 2",
-    thumbnail: "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/MI+2.jpg",
-    badge: "SEASON 4",
-    isPrime: true,
-    year: 2023,
-    duration: "1h 8m",
-    rating: "8.0",
-    genre: "Action",
-  },
-]
+import { ContentManager } from "../lib/content-database"
 
 export default function BookmarksPage() {
   const router = useRouter()
   const { user, setUser } = usePrimeAuthStore()
   const [loading, setLoading] = useState(true)
+  const bookmarkedMovies = [
+    ContentManager.getContentById("movie-1"), // The Tomorrow War
+    ContentManager.getContentById("movie-3"), // Sound of Metal  
+    ContentManager.getContentById("tv-4"),    // Jack Ryan
+  ].filter(Boolean);
+
+  const bookmarkedTVShows = [
+    ContentManager.getContentById("tv-1"),    // The Boys
+    ContentManager.getContentById("tv-2"),    // The Marvelous Mrs. Maisel
+    ContentManager.getContentById("tv-6"),    // Fallout
+  ].filter(Boolean);
+
+  const continueWatching = [
+    ContentManager.getContentById("featured-1"), // THE TRAITORS
+    ContentManager.getContentById("movie-9"),    // Mission Impossible 2
+  ].filter(Boolean);
+
 
   // Add storage listener for prime-user changes
-const { timestamp } = useStorageListener("prime-user")
+  const { timestamp } = useStorageListener("prime-user")
 
-useEffect(() => {
-  console.log('Prime Account: Storage change detected, reinitializing user data')
-  
-  // Clear current user and loading state
-  setLoading(true)
-  if (user) {
-    setUser(null)
-  }
-  
-  // Initialize user data from FireStories
-  const completeUserData = PrimeUserDataService.initializeFromFireStories()
-  
-  if (completeUserData) {
-    setUser(completeUserData)
-    console.log('Prime Account: User initialized/updated:', {
-      user: completeUserData.name,
-      friends: completeUserData.friends?.length || 0,
-      campfires: completeUserData.campfires?.length || 0
-    })
-  } else {
-    // If no user data available, redirect to main app
-    console.log('Prime Account: No user data found, redirecting to FireStories')
-    router.push("/")
-    return
-  }
-  
-  setLoading(false)
-}, [timestamp, setUser, router]) // React to storage changes via timestamp
+  useEffect(() => {
+    console.log('Prime Account: Storage change detected, reinitializing user data')
+
+    // Clear current user and loading state
+    setLoading(true)
+    if (user) {
+      setUser(null)
+    }
+
+    // Initialize user data from FireStories
+    const completeUserData = PrimeUserDataService.initializeFromFireStories()
+
+    if (completeUserData) {
+      setUser(completeUserData)
+      console.log('Prime Account: User initialized/updated:', {
+        user: completeUserData.name,
+        friends: completeUserData.friends?.length || 0,
+        campfires: completeUserData.campfires?.length || 0
+      })
+    } else {
+      // If no user data available, redirect to main app
+      console.log('Prime Account: No user data found, redirecting to FireStories')
+      router.push("/")
+      return
+    }
+
+    setLoading(false)
+  }, [timestamp, setUser, router]) // React to storage changes via timestamp
 
 
   return (

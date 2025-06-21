@@ -2,6 +2,7 @@
 
 import type React from "react";
 import { use } from "react";
+import { ContentManager } from "../../lib/content-database";
 
 import { useRouter } from "next/navigation";
 import {
@@ -17,7 +18,6 @@ import {
 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import ClipButton from "../../components/watch/ClipButton";
-import { getContentById } from "../../lib/data/mockData";
 
 interface WatchPageProps {
   params: Promise<{
@@ -38,7 +38,24 @@ export default function WatchPage({ params }: WatchPageProps) {
   const [videoError, setVideoError] = useState(false);
 
 
-  const content = getContentById(id);
+  const content = ContentManager.getContentById(id);
+  if (!content) {
+    return (
+      <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
+        <div className="text-white text-center">
+          <h1 className="text-2xl font-bold mb-4">Content Not Found</h1>
+          <p className="text-gray-400 mb-6">The requested content could not be found.</p>
+          <button
+            onClick={() => router.push('/prime')}
+            className="bg-[#00A8E1] text-black px-6 py-3 rounded-lg font-medium hover:bg-[#1FB6FF] transition-colors"
+          >
+            Back to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
+
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
