@@ -181,7 +181,6 @@ export default function WatchPage({ params }: WatchPageProps) {
           }
           onClick={togglePlay}
           autoPlay
-          muted
           playsInline
         >
           <source
