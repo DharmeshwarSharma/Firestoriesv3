@@ -34,7 +34,7 @@ export const CONTENT_DATABASE: { [key: string]: ContentItem } = {
     title: "Sholay",
     thumbnail: "https://i.pinimg.com/736x/34/5a/24/345a24ace17936febd4c6cd31c3197a7.jpg",
     backgroundImage: "https://i.pinimg.com/736x/34/5a/24/345a24ace17936febd4c6cd31c3197a7.jpg",
-    year: 2024,
+    year: 1975,
     duration: "1hr 45m",
     rating: "TV-MA",
     genre: "All Time Classic",
