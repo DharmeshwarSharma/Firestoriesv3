@@ -93,7 +93,7 @@ export default function FeaturedBanner({ content }: FeaturedBannerProps) {
               <div className="w-10 h-10 bg-gradient-to-r from-[#00A8E1] to-[#1FB6FF] rounded-xl flex items-center justify-center shadow-lg">
                 <span className="text-white text-sm font-bold">prime</span>
               </div>
-              <span className="text-[#00A8E1] font-semibold uppercase tracking-wider text-sm">Original Series</span>
+              <span className="text-[#00A8E1] font-semibold uppercase tracking-wider text-sm">Prime picks</span>
             </div>
           </div>
 
@@ -142,8 +142,8 @@ export default function FeaturedBanner({ content }: FeaturedBannerProps) {
             >
               <Play className="w-6 h-6 fill-current group-hover:scale-110 transition-transform duration-300" />
               <div className="text-left">
-                <div className="text-sm opacity-80">Play</div>
-                <div className="text-lg font-black">Episode 1</div>
+                <div className="text-xl opacity-100">Play</div>
+
               </div>
             </Link>
 

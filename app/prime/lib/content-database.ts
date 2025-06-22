@@ -42,8 +42,6 @@ export const CONTENT_DATABASE: { [key: string]: ContentItem } = {
     type: "original",
     category: "reality",
     description: "The all time classic Sholay , rewatch to have the nostalgia.",
-    episodeInfo: "NEW EPISODES THURSDAY 8 PM",
-    newEpisodeInfo: "New episode Thursday",
     imdbRating: "9",
     badge: "TOP 10"
   },

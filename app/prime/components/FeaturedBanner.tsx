@@ -94,7 +94,7 @@ export default function FeaturedBanner({ content }: FeaturedBannerProps) {
               <Play className="w-6 h-6 fill-current group-hover:scale-110 transition-transform duration-300" />
               <div className="text-left">
                 <div className="text-sm opacity-80">Play</div>
-                <div className="text-lg font-black">Episode 1</div>
+                <div className="text-lg font-black">Episode </div>
               </div>
             </Link>
 
