@@ -184,7 +184,7 @@ export default function WatchPage({ params }: WatchPageProps) {
           playsInline
         >
           <source
-            src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+            src="https://firestories.s3.ap-south-1.amazonaws.com/videos/Kitne+Aadmi+The+-++Most+Famous+Dialogue+From+Sholay++Gabbar+Singh++Amazon+Prime+Video.mp4"
             type="video/mp4"
           />
           Your browser does not support the video tag.

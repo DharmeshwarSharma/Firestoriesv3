@@ -51,15 +51,15 @@ export const DEMO_CONTENT: Content[] = [
   },
   {
     id: "1",
-    title: "Breaking Bad",
+    title: "Kohli's Perth Rampage",
     description:
-      "A large and lovable rabbit deals with three tiny bullies, led by a flying squirrel, who are determined to squelch his happiness.",
+      "Kohli's Magnum Opus",
     thumbnail:
-      "https://firestories.s3.ap-south-1.amazonaws.com/netflix-images/breaking+bad.jpg",
+      "https://i.pinimg.com/736x/3c/9e/4b/3c9e4bf2b0e927cd36b8696ccb72cd15.jpg",
     backdropImage:
-      "https://firestories.s3.ap-south-1.amazonaws.com/netflix-images/breaking+bad.jpg",
+      "https://i.pinimg.com/736x/3c/9e/4b/3c9e4bf2b0e927cd36b8696ccb72cd15.jpg",
     videoUrl:
-      "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      "https://firestories.s3.ap-south-1.amazonaws.com/videos/Full+highlights+of+Kohli's+Perth+classic.mp4",
     duration: 596,
     genre: ["Animation", "Comedy", "Family"],
     year: 2008,
@@ -68,6 +68,25 @@ export const DEMO_CONTENT: Content[] = [
     director: "Sacha Goedegebure",
     type: "movie",
   },
+  // {
+  //   id: "1",
+  //   title: "Breaking Bad",
+  //   description:
+  //     "A large and lovable rabbit deals with three tiny bullies, led by a flying squirrel, who are determined to squelch his happiness.",
+  //   thumbnail:
+  //     "https://firestories.s3.ap-south-1.amazonaws.com/netflix-images/breaking+bad.jpg",
+  //   backdropImage:
+  //     "https://firestories.s3.ap-south-1.amazonaws.com/netflix-images/breaking+bad.jpg",
+  //   videoUrl:
+  //     "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+  //   duration: 596,
+  //   genre: ["Animation", "Comedy", "Family"],
+  //   year: 2008,
+  //   rating: "G",
+  //   cast: ["Sacha Goedegebure", "Frank Ekkebus", "Jan Morgenstern"],
+  //   director: "Sacha Goedegebure",
+  //   type: "movie",
+  // },
   {
     id: "2",
     title: "Hit: The Third Case",

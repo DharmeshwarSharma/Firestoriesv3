@@ -31,20 +31,20 @@ export const CONTENT_DATABASE: { [key: string]: ContentItem } = {
   // Featured Content
   "featured-1": {
     id: "featured-1",
-    title: "THE TRAITORS",
-    thumbnail: "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+traitors.jpg",
-    backgroundImage: "https://firestories.s3.ap-south-1.amazonaws.com/prime-images/the+traitors.jpg",
+    title: "Sholay",
+    thumbnail: "https://i.pinimg.com/736x/34/5a/24/345a24ace17936febd4c6cd31c3197a7.jpg",
+    backgroundImage: "https://i.pinimg.com/736x/34/5a/24/345a24ace17936febd4c6cd31c3197a7.jpg",
     year: 2024,
-    duration: "45m",
+    duration: "1hr 45m",
     rating: "TV-MA",
-    genre: "Reality TV",
+    genre: "All Time Classic",
     isPrime: true,
     type: "original",
     category: "reality",
-    description: "Season 1 · Welcome to The Traitors — a ruthless reality show hosted by Karan Johar, where 20 celebrities betray and deceive each other for a chance to win a massive cash prize. Trust no one.",
+    description: "The all time classic Sholay , rewatch to have the nostalgia.",
     episodeInfo: "NEW EPISODES THURSDAY 8 PM",
     newEpisodeInfo: "New episode Thursday",
-    imdbRating: "8.2",
+    imdbRating: "9",
     badge: "TOP 10"
   },
 
